@@ -41,7 +41,9 @@ import com.nicholas.rutherford.track.your.shot.data.shared.appbar.AppBar
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.PositionChooser
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.ShotsContent
 import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.UploadPlayerImageContent
+import com.nicholas.rutherford.track.your.shot.feature.players.createeditplayer.ext.UploadPlayerVideoContent
 import com.nicholas.rutherford.track.your.shot.helper.extensions.getImageUri
+import com.nicholas.rutherford.track.your.shot.helper.extensions.getVideoUri
 import com.nicholas.rutherford.track.your.shot.helper.extensions.hasCameraPermissionEnabled
 import com.nicholas.rutherford.track.your.shot.helper.ui.Padding
 import com.nicholas.rutherford.track.your.shot.helper.ui.TextStyles
@@ -55,6 +57,8 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
     val scope = rememberCoroutineScope()
     var hasUploadedImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var hasUploadedVideo by remember { mutableStateOf(false) }
+    var videoUri by remember { mutableStateOf<Uri?>(null) }
     var shouldAskForCameraPermission by remember { mutableStateOf(value = false) }
     val context = LocalContext.current
 
@@ -65,11 +69,28 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
         imageUri = bitmap?.let { getImageUri(context = context, image = it) }
             ?: imageUri
     }
+    val cameraLauncherVideo = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CaptureVideo()
+    ) { video ->
+        hasUploadedVideo = video != null || videoUri != null
+        videoUri = getVideoUri(context = context, video = video)
+            ?: videoUri
+    }
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
             if (isGranted) {
                 cameraLauncher.launch()
+            } else {
+                createEditPlayerParams.permissionNotGrantedForCameraAlert.invoke()
+            }
+        }
+    )
+    val cameraVideoPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (isGranted) {
+                cameraLauncherVideo.launch()
             } else {
                 createEditPlayerParams.permissionNotGrantedForCameraAlert.invoke()
             }
@@ -124,7 +145,9 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                         hasUploadedImage = hasUploadedImage,
                         scope = scope,
                         bottomState = bottomState,
-                        imageUri = imageUri
+                        imageUri = imageUri,
+                        videoUri = videoUri,
+                        hasUploadedVideo = hasUploadedVideo
                     )
                 }
 
@@ -176,7 +199,9 @@ private fun CreateEditPlayerUi(
     hasUploadedImage: Boolean,
     scope: CoroutineScope,
     bottomState: ModalBottomSheetState,
-    imageUri: Uri?
+    imageUri: Uri?,
+    videoUri: Uri?,
+    hasUploadedVideo: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -229,6 +254,14 @@ private fun CreateEditPlayerUi(
             bottomState = bottomState,
             createEditPlayerParams = createEditPlayerParams,
             imageUri = imageUri
+        )
+
+        UploadPlayerVideoContent(
+            hasUploadedVideo = hasUploadedVideo,
+            scope = scope,
+            bottomState = bottomState,
+            createEditPlayerParams = createEditPlayerParams,
+            videoUri = videoUri
         )
 
         Spacer(modifier = Modifier.height(Padding.sixteen))

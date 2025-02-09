@@ -11,6 +11,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddAPhoto
+import androidx.compose.material.icons.filled.VideoFile
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -61,7 +62,7 @@ fun UploadPlayerImageContent(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun uploadPlayerVideoContent (
+fun UploadPlayerVideoContent (
     hasUploadedVideo: Boolean,
     scope: CoroutineScope,
     bottomState: ModalBottomSheetState,
@@ -84,8 +85,8 @@ fun uploadPlayerVideoContent (
             )
         } else {
             Icon(
-                imageVector = Icons.Default.AddAPhoto,
-                contentDescription = "Add a photo icon",
+                imageVector = Icons.Default.VideoFile,
+                contentDescription = "Add a video icon",
                 modifier = Modifier
                     .size(48.dp)
                     .clickable {

@@ -121,7 +121,7 @@ fun getImageUri(context: Context, image: Bitmap): Uri? {
     return uri
 }
 
-fun getVideoUri(context: Context, video: Movie): Uri? {
+fun getVideoUri(context: Context, video: Boolean): Uri? {
     val values = ContentValues().apply {
         put(MediaStore.Video.Media.TITLE, "title")
         put(MediaStore.Video.Media.DESCRIPTION, "description")
