@@ -90,7 +90,7 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
             if (isGranted) {
-                cameraLauncherVideo.launch()
+                cameraLauncherVideo.launch(videoUri)
             } else {
                 createEditPlayerParams.permissionNotGrantedForCameraAlert.invoke()
             }
@@ -106,6 +106,7 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
 
     if (shouldAskForCameraPermission) {
         cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+        cameraVideoPermissionLauncher.launch(Manifest.permission.CAMERA)
         shouldAskForCameraPermission = false
     }
 
