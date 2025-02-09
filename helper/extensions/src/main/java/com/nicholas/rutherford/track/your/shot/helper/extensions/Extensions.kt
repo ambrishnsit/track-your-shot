@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Movie
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -109,6 +110,31 @@ fun getImageUri(context: Context, image: Bitmap): Uri? {
             val outputStream = contentResolver.openOutputStream(uri)
             if (outputStream != null) {
                 image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            }
+            outputStream?.close()
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return null
+    }
+
+    return uri
+}
+
+fun getVideoUri(context: Context, video: Movie): Uri? {
+    val values = ContentValues().apply {
+        put(MediaStore.Video.Media.TITLE, "title")
+        put(MediaStore.Video.Media.DESCRIPTION, "description")
+    }
+
+    val contentResolver = context.contentResolver
+    val uri = contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values)
+
+    try {
+        if (uri != null) {
+            val outputStream = contentResolver.openOutputStream(uri)
+            if (outputStream != null) {
+                video.compress(Movie.decodeFile(), 100, outputStream)
             }
             outputStream?.close()
         }

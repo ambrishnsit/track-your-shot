@@ -58,3 +58,41 @@ fun UploadPlayerImageContent(
         }
     }
 }
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun uploadPlayerVideoContent (
+    hasUploadedVideo: Boolean,
+    scope: CoroutineScope,
+    bottomState: ModalBottomSheetState,
+    createEditPlayerParams: CreateEditPlayerParams,
+    videoUri: Uri?
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        if (hasUploadedVideo && videoUri != null || createEditPlayerParams.state.editedPlayerUrl.isNotEmpty()) {
+            AsyncImage(
+                model = videoUri ?: createEditPlayerParams.state.editedPlayerUrl,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(90.dp)
+                    .clickable {
+                        createEditPlayerParams.onVideoUploadClicked.invoke(videoUri)
+                        scope.launch { bottomState.show() }
+                    }
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Default.AddAPhoto,
+                contentDescription = "Add a photo icon",
+                modifier = Modifier
+                    .size(48.dp)
+                    .clickable {
+                        createEditPlayerParams.onVideoUploadClicked.invoke(videoUri)
+                        scope.launch { bottomState.show() }
+                    }
+            )
+        }
+    }
+}
