@@ -78,6 +78,7 @@ dependencies {
     api(project(path = ":helper:extensions"))
     api(project(path = ":helper:network"))
     api(project(path = ":navigation"))
+    implementation("androidx.compose.foundation:foundation-layout-android:1.5.3")
 
     debugImplementation(Dependencies.Compose.uiToolingPreview)
 
