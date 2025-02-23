@@ -945,4 +945,12 @@ class CreateEditPlayerViewModel(
             isPending = this.isPending
         )
     }
+
+    fun onSuccessfulVideoUpload(uri: Uri) {
+        scope.launch {
+            createFirebaseUserInfo.attemptToCreateVideoFirebaseStorageResponseFlow(uri = uri).collect { videoUrl ->
+                println("$videoUrl")
+            }
+        }
+    }
 }

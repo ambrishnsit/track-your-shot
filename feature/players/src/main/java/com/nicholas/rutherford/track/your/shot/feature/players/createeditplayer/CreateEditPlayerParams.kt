@@ -16,5 +16,6 @@ data class CreateEditPlayerParams(
     val permissionNotGrantedForCameraAlert: () -> Unit,
     val onSelectedCreateEditImageOption: (uri: String) -> CreateEditImageOption,
     val onViewShotClicked: (shotType: Int, shotId: Int) -> Unit,
-    val onViewPendingShotClicked: (shotType: Int, shotId: Int) -> Unit
+    val onViewPendingShotClicked: (shotType: Int, shotId: Int) -> Unit,
+    val onSuccessfulVideoUpload: (uri: Uri) -> Unit
 )

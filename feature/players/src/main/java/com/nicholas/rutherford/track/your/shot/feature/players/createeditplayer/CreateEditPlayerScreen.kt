@@ -224,12 +224,6 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
 
                         Spacer(modifier = Modifier.height(Padding.sixteen))
 
-                        VideoPickerScreen(
-                            onVideoSelected = {
-                                println("SRT: 1 Video URI = $it")
-                            }
-                        )
-
                     ShotsContent(
                         shotList = createEditPlayerParams.state.shots,
                         pendingShotList = createEditPlayerParams.state.pendingShots,
@@ -240,6 +234,14 @@ fun CreateEditPlayerScreen(createEditPlayerParams: CreateEditPlayerParams) {
                         },
                         onPendingShotClicked = { shotType, shotId ->
                             createEditPlayerParams.onViewPendingShotClicked.invoke(shotType, shotId)
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.height(Padding.sixteen))
+
+                    VideoPickerScreen(
+                        onVideoSelected = { uri ->
+                            createEditPlayerParams.onSuccessfulVideoUpload(uri)
                         }
                     )
                 }

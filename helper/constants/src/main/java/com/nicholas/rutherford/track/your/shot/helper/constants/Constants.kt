@@ -55,4 +55,5 @@ object Constants {
     const val POWER_FORWARD_VALUE = 3
     const val USERNAME = "userName"
     const val USERS = "users"
+    const val VIDEO = "video"
 }

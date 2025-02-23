@@ -13,4 +13,5 @@ interface CreateFirebaseUserInfo {
     fun attemptToCreateIndividualPlayerReportFirebaseRealtimeDatabaseResponseFlow(individualPlayerReportRealtimeResponse: IndividualPlayerReportRealtimeResponse): Flow<Pair<Boolean, String?>>
     fun attemptToCreateImageFirebaseStorageResponseFlow(uri: Uri): Flow<String?>
     fun attemptToCreatePdfFirebaseStorageResponseFlow(uri: Uri): Flow<String?>
+    fun attemptToCreateVideoFirebaseStorageResponseFlow(uri: Uri): Flow<String?>
 }

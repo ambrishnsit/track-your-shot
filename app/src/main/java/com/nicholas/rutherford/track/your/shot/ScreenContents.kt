@@ -64,6 +64,11 @@ class ScreenContents {
                         shotType = shotType,
                         shotId = shotId
                     )
+                },
+                onSuccessfulVideoUpload = { uri ->
+                    createEditPlayerViewModel.onSuccessfulVideoUpload(
+                        uri = uri
+                    )
                 }
             )
         )
